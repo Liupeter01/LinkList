@@ -121,8 +121,16 @@ BOOL LinkListInsertBackByPos(LinkList* L, int pos, ElemType e)//单链表按位序插入
 					LinkNode* s = (LinkNode*)malloc(sizeof(LinkNode));
 					s->data = e;
 					s->next = NULL;
-					s->next = p->next;
-					p->next = s;
+
+					if (p->next == NULL)		  //该节点是最后一个节点没有后继
+					{
+							  p->next = s;
+					}
+					else
+					{
+							  s->next = p->next;
+							  p->next = s;
+					}
 					return TRUE;
 		  }
 		  else
@@ -196,7 +204,7 @@ BOOL LinkListInsertBackByNum(LinkList* L, ElemType Num, ElemType e) //单链表按照
 		  }
 }
 
-LinkNode* LocateElemByNum(LinkList* L, ElemType e) //按照值进行查找 
+LinkNode* LocateElemByNum(LinkList* L, ElemType key) //按照值进行查找 
 {
 		  if (L == NULL)
 		  {
@@ -204,18 +212,8 @@ LinkNode* LocateElemByNum(LinkList* L, ElemType e) //按照值进行查找
 					return FALSE;
 		  }
 		  LinkNode* p = (*L)->next;
-		  while (p != NULL && p->data != e)
-		  {
-					p = p->next;
-		  }
-		  if (p != NULL)
-		  {
-					return p;
-		  }
-		  else
-		  {
-					return NULL;
-		 }
+		  for (p; p != NULL && p->data != key; p = p->next);
+		  return p;
 }
 
 LinkNode* LocateElemByPos(LinkList* L, int pos) //按照位序进行查找 

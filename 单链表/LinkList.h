@@ -39,7 +39,7 @@ BOOL LinkListInsertFrontByNum(LinkList* L, ElemType Num, ElemType e); //单链表按
 BOOL LinkListInsertBackByNum(LinkList* L, ElemType Num, ElemType e); //单链表按照数值进行尾插
 
 /*搜索系列*/
-LinkNode* LocateElemByNum(LinkList* L, ElemType e); //按照值进行查找 
+LinkNode* LocateElemByNum(LinkList* L, ElemType key); //按照值进行查找 
 LinkNode* LocateElemByPos(LinkList* L, int pos); //按照位序进行查找 
 
 /*删除系列*/

@@ -30,39 +30,38 @@ void Menu(SLIST_T* list)
                               case 1:SListPushBack(list); break; //数据初始化尾部插入
                               case 2: SListPushFront(list); break; //数据初始化头部插入
                               case 3:DisplayLinkList(list->first); break;
-                              case 4:; break;
-                              case 5:; break;
-                              case 6:    //数据的位序插入
+                              case 4:SListPopBack(list); break;
+                              case 5:SListPopFront(list); break;
+                              case 6:    //数据的位序插入，当前默认使用后插法
                               {
-                                        //printf("请输入需要插入的数据：>");
-                                        //ElemType item = 0;  //数据
-                                        //scanf("%d", &item);
-                                        //printf("请输入需要插入的位置：>");
-                                        //int pos = 0;   //位置
-                                        //scanf("%d", &pos);
-                                        //ListInsert(list, pos, item);
+                                        printf("请输入需要插入的数据：>");
+                                        ElemType item = 0;  //数据
+                                        scanf("%d", &item);
+                                        printf("请输入需要插入的位置：>");
+                                        int pos = 0;   //位置
+                                        scanf("%d", &pos);
+                                        SListInsertBackByPos(list, pos, item);
                                         break;
                               }
 
                               case 7:   //数据的查找
                               {
-                                       /* printf("请输入需要查找的数据：>");
+                                        printf("请输入需要查找的数据：>");
                                         ElemType item = 0;
                                         scanf("%d", &item);
-                                        int pos = LocateElem(*list, item);
-                                        if (pos == -1)
+                                        LinkNode* node = LocateElemByNum(&(list->first), item);
+                                        if (node == NULL)
                                         {
-                                                  printf("查找的数据%d在顺序表中不存在\n", item);
+                                                  printf("查找的数据%d在链表中不存在\n", item);
                                         }
                                         else
                                         {
-                                                  printf("查找的数据%d在顺序表中的位序为%d的位置\n", item, pos);
+                                                  printf("查找的数据%d在链表中存在\n", item);
                                         }
-                                        break;*/
+                                        break;
                               }
 
-                              case 8://printf("顺序表的长度为：%d\n", Length(*list));
-                                        break;
+                              case 8:printf("链表的长度为：%d\n", list->amount); break;
                               case 9: //删除数据所在位序的元素
                               {
                                         //printf("请输入需要删除的元素所在的位序：>");
@@ -87,7 +86,7 @@ void Menu(SLIST_T* list)
                                         //}
                                         //break;
                               }
-                              case 11: break;                  //快速排序(也可以选择堆排序)
+                              case 11: break;             //快速排序(也可以选择堆排序)
                               case 12: break;            //逆转
                               case 13: break;
                               case 14:break;
