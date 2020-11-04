@@ -24,12 +24,18 @@
     <ClCompile Include="Slist.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="menu.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LinkList.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Slist.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

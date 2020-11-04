@@ -1,7 +1,7 @@
 /**
 * @file	  LinkList.h
 * @brief	
-* @details	    This is the detail description.
+* @details	    这是低版本的底层框架
 * @author		LPH
 * @date		    2020.11.4
 * @version	    v0.1
@@ -25,6 +25,8 @@ typedef struct LinkNode
 }LinkNode,*LinkList;
 
 void InitLinkList(LinkList* list);				  //单链表的初始化
+BOOL IsEmpty(LinkList list);					  //判空操作
+int LinkListLength(LinkList list);				  //单链表的表长
 
 /*插入系列*/
 void LinkList_PushBack(LinkList* list);	//单链表的尾插法
@@ -41,11 +43,8 @@ LinkNode* LocateElemByNum(LinkList* L, ElemType e); //按照值进行查找
 LinkNode* LocateElemByPos(LinkList* L, int pos); //按照位序进行查找 
 
 /*删除系列*/
-BOOL LinkListDeleteFrontByPos(LinkList* L, int pos, ElemType* e); //单链表按位序前部删除元素
-BOOL LinkListDeleteBackByPos(LinkList* L, int pos, ElemType* e); //单链表按位序前部删除元素
-
-BOOL LinkListDeleteFrontByNum(LinkList* L, ElemType Num, ElemType *e); //单链表按照数值进行前部删除
-BOOL LinkListDeleteBackByNum(LinkList* L, ElemType Num, ElemType *e); //单链表按照数值进行尾部删除
+BOOL LinkListDeleteByPos(LinkList* L, int pos, ElemType* e);//单链表按位序删除元素
+BOOL LinkListDeleteByNum(LinkList* L, ElemType Num, ElemType* e); //单链表按照数值进行删除
 
 /*显示系列*/
 void DisplayLinkList(LinkList list);	//单链表的输出

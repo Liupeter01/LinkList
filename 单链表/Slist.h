@@ -1,11 +1,26 @@
+/**
+* @file	  Slist.h
+* @brief			基础的LinkList的升级版，增加了更多控制的细节
+* @details	    This is the detail description.
+* @author		LPH
+* @date		    2020.11.4
+* @version	    v0.1
+* @par Copyright(c): 	LPH corporation
+* @par History:
+*	version: author, date, desc\n
+*/
 #pragma once
 #include"LinkList.h"
 
 typedef struct SLIST_T
 {
-		  LinkList head;
-		  LinkList tail;
-		  size_t amount;
+		  LinkList first;				//用于存放链表的头结点
+		  LinkList last;					//用于存放链表的最后一个节点
+		  size_t amount;				//用于存放链表的节点总数
 }SLIST_T;
 
-void Satictics(SLIST_T slist, LinkList list);				//统计函数，用于信息的输出
+void InitSlist(SLIST_T* SL);			//初始化
+
+/*插入系列*/
+void SListPushBack(SLIST_T* SL);	//单链表的尾插法
+void SListPushFront(SLIST_T* SL);//单链表的头插法

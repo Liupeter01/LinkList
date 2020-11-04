@@ -241,23 +241,83 @@ LinkNode* LocateElemByPos(LinkList* L, int pos) //按照位序进行查找
 		  }
 }
 
-BOOL LinkListDeleteFrontByPos(LinkList* L, int pos, ElemType* e)//单链表按位序前部删除元素
+BOOL LinkListDeleteByPos(LinkList* L, int pos, ElemType* e) //单链表按位序删除元素
 {
-
+		  if (L == NULL)
+		  {
+					printf("单链表没有被创建，删除失败\n");
+					return FALSE;
+		  }
+		  if (pos < 1)
+		  {
+					printf("单链表的输入的位置非法，删除失败\n");
+					return FALSE;
+		  }
+		  LinkNode* p = (*L)->next;		//跳过头结点从首元节点开始
+		  int counter = 1;
+		  while (p != NULL && counter++ < pos - 1)
+		  {
+					p = p->next;
+		  }
+		  if (p != NULL)				//判断有无找到节点
+		  {
+					LinkNode* ptemp = p->next;
+					*e = ptemp->data;
+					p->next = ptemp->next;
+					free(ptemp);
+					return TRUE;
+		  }
+		  else
+		  {
+					return FALSE;				  //没有找到节点
+		  }
 }
 
-BOOL LinkListDeleteBackByPos(LinkList* L, int pos, ElemType* e) //单链表按位序前部删除元素
+BOOL LinkListDeleteByNum(LinkList* L, ElemType Num, ElemType* e) //单链表按照数值进行删除
 {
-
+		  if (L == NULL)
+		  {
+					printf("单链表没有被创建，删除失败\n");
+					return FALSE;
+		  }
+		  LinkNode* p = (*L)->next;
+		  LinkNode* pre = NULL;
+		  while (p != NULL && p->data != Num)
+		  {
+					pre = p;
+					p = p->next;
+		  }
+		  if (p != NULL)				//判断是否找到
+		  {
+					pre->next = p->next;
+					*e = p->data;
+					free(p);			//将p删除
+					return TRUE;
+		  }
+		  else
+		  {
+					return FALSE;				  //没有找到
+		  }
 }
 
-BOOL LinkListDeleteFrontByNum(LinkList* L, ElemType Num, ElemType* e) //单链表按照数值进行前部删除
+BOOL IsEmpty(LinkList list)				  //判空操作
 {
-
+		  return (list->next == NULL);
 }
-BOOL LinkListDeleteBackByNum(LinkList* L, ElemType Num, ElemType* e) //单链表按照数值进行尾部删除
-{
 
+int LinkListLength(LinkList list)				  //单链表的表长
+{
+		  if (list->next == NULL)
+		  {
+					return 0;
+		  }
+		  int counter = 0;
+		  LinkNode* px = list->next;
+		  for (px; px != NULL; px = px->next)
+		  {
+					counter++;
+		  }
+		  return counter;
 }
 
 void DisplayLinkList(LinkList list)	//单链表的输出
@@ -265,7 +325,8 @@ void DisplayLinkList(LinkList list)	//单链表的输出
 		  LinkNode* p = list->next;
 		  while (p != NULL)
 		  {
-					printf("%-7d", p->data);
+					printf("%-5d", p->data);
 					p = p->next;
 		  }
+		  printf("\n");
 }
