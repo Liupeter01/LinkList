@@ -196,6 +196,70 @@ BOOL LinkListInsertBackByNum(LinkList* L, ElemType Num, ElemType e) //单链表按照
 		  }
 }
 
+LinkNode* LocateElemByNum(LinkList* L, ElemType e) //按照值进行查找 
+{
+		  if (L == NULL)
+		  {
+					printf("单链表没有被创建，查找失败\n");
+					return FALSE;
+		  }
+		  LinkNode* p = (*L)->next;
+		  while (p != NULL && p->data != e)
+		  {
+					p = p->next;
+		  }
+		  if (p != NULL)
+		  {
+					return p;
+		  }
+		  else
+		  {
+					return NULL;
+		 }
+}
+
+LinkNode* LocateElemByPos(LinkList* L, int pos) //按照位序进行查找 
+{
+		  if (L == NULL)
+		  {
+					printf("单链表没有被创建，查找失败\n");
+					return NULL;
+		  }
+		  int counter = 0;
+		  LinkNode* p = (*L)->next;		//从首元节点开始循环
+		  while (p != NULL && counter++ != pos)
+		  {
+					p = p->next;
+		  }
+		  if (p == NULL)	  //没有找到
+		  {
+					return NULL;
+		  }
+		  else
+		  {
+					return p;
+		  }
+}
+
+BOOL LinkListDeleteFrontByPos(LinkList* L, int pos, ElemType* e)//单链表按位序前部删除元素
+{
+
+}
+
+BOOL LinkListDeleteBackByPos(LinkList* L, int pos, ElemType* e) //单链表按位序前部删除元素
+{
+
+}
+
+BOOL LinkListDeleteFrontByNum(LinkList* L, ElemType Num, ElemType* e) //单链表按照数值进行前部删除
+{
+
+}
+BOOL LinkListDeleteBackByNum(LinkList* L, ElemType Num, ElemType* e) //单链表按照数值进行尾部删除
+{
+
+}
+
 void DisplayLinkList(LinkList list)	//单链表的输出
 {
 		  LinkNode* p = list->next;
