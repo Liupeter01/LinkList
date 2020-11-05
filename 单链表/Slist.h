@@ -25,6 +25,7 @@ void InitSlist(SLIST_T* SL);			//初始化
 void  SListSort(LinkNode* left, LinkNode* right);			//排序
 void SListDistroy(SLIST_T* SL);					  //链表的摧毁
 void SListClear(SLIST_T* SL);			//链表的清空
+void SListReverse(SLIST_T* SL);			//链表的反转
 
 /*插入系列*/
 void SListPushBack(SLIST_T* SL);	//单链表的尾插法

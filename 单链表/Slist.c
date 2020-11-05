@@ -285,10 +285,44 @@ void  SListSort(LinkNode *left,LinkNode *right)			//排序
 		  }
 }
 
+void SListReverse(SLIST_T* SL)			//链表的反转
+{
+		  if (SL->amount == 0 || SL->amount == 1)
+		  {
+					return;				//如果链表的大小为0个或者1个没有必要进行操作
+		  }
+		  else
+		  {
+					SL->last = SL->first->next;				//将首元节点记录为尾部节点
+					LinkNode* p = SL->first->next;			//指向首元节点
+					LinkNode* pnext = p->next;			//指向p之后的节点
+					while (pnext != NULL)
+					{
+							  LinkNode* temp = pnext;				  //临时记录节点位置
+							  if (temp->next == NULL)
+							  {
+										pnext->next = p;
+										SL->first->next = pnext;
+										break;
+							  }
+							  else
+							  {
+										pnext = pnext->next;		  //p去下一个节点
+										temp->next = p;		
+										p = temp;			//p紧跟上一个元素
+							  }				  
+					}
+					SL->last->next = NULL;
+		  }
+}
+
 void SListDistroy(SLIST_T* SL)					  //链表的摧毁
 {
-		  for (LinkNode* px = SL->first; px != SL->last; px = px->next)
+		  LinkNode* ptemp = NULL;
+		  for (LinkNode* px = SL->first->next;  px!=NULL; px = ptemp)
 		  {
+					LinkNode* ptemp = px->next;
+					px->next = NULL;
 					free(px);
 		  }
 		  SL->amount = 0;
@@ -296,8 +330,10 @@ void SListDistroy(SLIST_T* SL)					  //链表的摧毁
 
 void SListClear(SLIST_T* SL)		//链表的清空
 {
-		  for (LinkNode* px = SL->first; px != SL->last; px = px->next)
+		  LinkNode* px = SL->first->next;
+		  while (px != NULL)
 		  {
-					px->data = 0;		//清空数据
+					px->data = 0;
+					px = px->next;
 		  }
 }

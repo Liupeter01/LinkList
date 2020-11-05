@@ -339,6 +339,7 @@ int LinkListLength(LinkList list)				  //单链表的表长
 void DisplayLinkList(LinkList list)	//单链表的输出
 {
 		  LinkNode* p = list->next;
+		  if(p->next != NULL)
 		  while (p != NULL)
 		  {
 					printf("%d--->", p->data);
