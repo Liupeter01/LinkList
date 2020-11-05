@@ -251,18 +251,27 @@ BOOL LinkListDeleteByPos(LinkList* L, int pos, ElemType* e) //µ¥Á´±í°´Î»ÐòÉ¾³ýÔª
 					printf("µ¥Á´±íµÄÊäÈëµÄÎ»ÖÃ·Ç·¨£¬É¾³ýÊ§°Ü\n");
 					return FALSE;
 		  }
-		  LinkNode* p = (*L)->next;		//Ìø¹ýÍ·½áµã´ÓÊ×Ôª½Úµã¿ªÊ¼
+		  LinkNode* p =(*L)->next;		//Ìø¹ýÍ·½áµã´ÓÊ×Ôª½Úµã¿ªÊ¼
 		  int counter = 1;
 		  while (p != NULL && counter++ < pos - 1)
 		  {
-					p = p->next;
+					p = p->next;//¼ÇÂ¼Ç°Ò»¸ö
 		  }
 		  if (p != NULL)				//ÅÐ¶ÏÓÐÎÞÕÒµ½½Úµã
 		  {
 					LinkNode* ptemp = p->next;
-					*e = ptemp->data;
-					p->next = ptemp->next;
-					free(ptemp);
+					if (ptemp->next == NULL)			  //¸Ã½Úµã²»´æÔÚÏÂÒ»¸ö½Úµã(µ±Ç°ÊÇÎ²²¿½Úµã)
+					{
+							  *e = ptemp->data;					//È¡³öÊý¾Ý
+							  p->next = NULL;
+							  free(ptemp);
+					}
+					else
+					{
+							  *e = ptemp->data;
+							  p->next = ptemp->next;
+							  free(ptemp);
+					}
 					return TRUE;
 		  }
 		  else
@@ -278,7 +287,7 @@ BOOL LinkListDeleteByNum(LinkList* L, ElemType Num, ElemType* e) //µ¥Á´±í°´ÕÕÊýÖ
 					printf("µ¥Á´±íÃ»ÓÐ±»´´½¨£¬É¾³ýÊ§°Ü\n");
 					return FALSE;
 		  }
-		  LinkNode* p = (*L)->next;
+		  LinkNode* p = (*L)->next;		//Ìø¹ýÍ·½áµã´ÓÊ×Ôª½Úµã¿ªÊ¼
 		  LinkNode* pre = NULL;
 		  while (p != NULL && p->data != Num)
 		  {
@@ -287,9 +296,18 @@ BOOL LinkListDeleteByNum(LinkList* L, ElemType Num, ElemType* e) //µ¥Á´±í°´ÕÕÊýÖ
 		  }
 		  if (p != NULL)				//ÅÐ¶ÏÊÇ·ñÕÒµ½
 		  {
-					pre->next = p->next;
-					*e = p->data;
-					free(p);			//½«pÉ¾³ý
+					if (p->next == NULL)			  //µ±Ç°½ÚµãÎª×îºóµÄÒ»¸ö½Úµã
+					{
+							  *e = p->data;					//È¡³öÊý¾Ý
+							  pre->next = NULL;
+							  free(p);
+					}
+					else
+					{
+							  pre->next = p->next;
+							  *e = p->data;
+							  free(p);			//½«pÉ¾³ý
+					}
 					return TRUE;
 		  }
 		  else
@@ -323,8 +341,8 @@ void DisplayLinkList(LinkList list)	//µ¥Á´±íµÄÊä³ö
 		  LinkNode* p = list->next;
 		  while (p != NULL)
 		  {
-					printf("%-5d", p->data);
+					printf("%d--->", p->data);
 					p = p->next;
 		  }
-		  printf("\n");
+		  printf("END\n");
 }

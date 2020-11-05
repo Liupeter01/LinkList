@@ -20,7 +20,7 @@ void Menu(SLIST_T* list)
                     scanf("%d", &select);
                     if (!select)         //选择值为0 
                     {
-                              //Destory(list);      //z 防止内存泄漏仍然清空内存
+                              SListDistroy(list);      //z 防止内存泄漏仍然清空内存
                               break;              //退出并结束
                     }
                     else
@@ -64,32 +64,32 @@ void Menu(SLIST_T* list)
                               case 8:printf("链表的长度为：%d\n", list->amount); break;
                               case 9: //删除数据所在位序的元素
                               {
-                                        //printf("请输入需要删除的元素所在的位序：>");
-                                        //ElemType item;               //存放删除的数据
-                                        //int pos = 0;
-                                        //scanf("%d", &pos);
-                                        //if (!ListDeleteByPos(list, pos, &item))
-                                        //{
-                                        //          printf("数据删除失败\n");
-                                        //}
-                                        //break;
+                                        printf("请输入需要删除的元素所在的位序：>");
+                                        ElemType item;               //存放删除的数据
+                                        int pos = 0;
+                                        scanf("%d", &pos);
+                                        if (!SListDeleteByPos(list, pos, &item))
+                                        {
+                                                  printf("数据删除失败\n");
+                                        }
+                                        break;
                               }
                               case 10://删除指定的数据元素
                               {
-                                        //printf("请输入需要删除的元素：>");
-                                        //ElemType num;               //删除的数据
-                                        //ElemType item;               //存放删除的数据
-                                        //scanf("%d", &num);
-                                        //if (!ListDeleteByNumber(list, num, &item))
-                                        //{
-                                        //          printf("数据删除失败\n");
-                                        //}
-                                        //break;
+                                        printf("请输入需要删除的元素：>");
+                                        ElemType num;               //删除的数据
+                                        ElemType item;               //存放删除的数据
+                                        scanf("%d", &num);
+                                        if (!SListDeleteByNum(list, num, &item))
+                                        {
+                                                  printf("数据删除失败\n");
+                                        }
+                                        break;
                               }
-                              case 11: break;             //快速排序(也可以选择堆排序)
+                              case 11: SListSort(list->first->next, list->last); break;             //快速排序(也可以选择堆排序)
                               case 12: break;            //逆转
-                              case 13: break;
-                              case 14:break;
+                              case 13: SListClear(list); break;
+                              case 14:SListDistroy(list); break;
                               case 15:system("cls"); break;
                               default:printf("输入错误请重新输入\n"); break;
                               }

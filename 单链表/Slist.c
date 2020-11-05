@@ -171,3 +171,133 @@ void SListPopFront(SLIST_T* SL)			//单链表的头部删除
 					}
 		  }
 }
+
+BOOL SListDeleteByPos(SLIST_T* SL, int pos, ElemType* e)//单链表的通过位序删除
+{
+		  if (SL == NULL || SL->amount == 0)
+		  {
+					printf("链表的长度为空，无法进行删除操作\n");
+					return FALSE;
+		  }
+		  if (pos <0 || pos>SL->amount)
+		  {
+					printf("输入的需要删除的位置非法，无法进行删除操作\n");
+					return FALSE;
+		  }
+		  LinkNode* p = SL->first->next;		//跳过头结点从首元节点开始
+		  int counter = 1;
+		  while (p != NULL && counter++ < pos - 1)
+		  {
+					p = p->next;//记录前一个
+		  }
+		  if (p != NULL)				//判断有无找到节点
+		  {
+					LinkNode* ptemp = p->next;
+					if (ptemp->next == NULL)			  //该节点不存在下一个节点(当前是尾部节点)
+					{
+							  *e = ptemp->data;					//取出数据
+							  p->next = NULL;
+							  SL->last = p;				//倒数第二个节点为尾结点
+							  free(ptemp);
+							  SL->amount--;				  //数量减少
+					}
+					else
+					{
+							  *e = ptemp->data;
+							  p->next = ptemp->next;
+							  free(ptemp);
+							  SL->amount--;				  //数量减少
+					}
+					return TRUE;
+		  }
+		  else
+		  {
+					return FALSE;				  //没有找到节点
+		  }
+}
+
+BOOL SListDeleteByNum(SLIST_T* SL, ElemType key, ElemType* e)		//单链表的通过数值删除
+{
+		  if (SL == NULL || SL->amount == 0)
+		  {
+					printf("链表的长度为空，无法进行删除操作\n");
+					return FALSE;
+		  }
+		  LinkNode* p = SL->first->next;		//跳过头结点从首元节点开始
+		  LinkNode* pre = NULL;
+		  while (p != NULL && p->data != key)
+		  {
+					pre = p;
+					p = p->next;
+		  }
+		  if (p != NULL)				//判断是否找到
+		  {
+					if (p->next == NULL)			  //当前节点为最后的一个节点
+					{
+							  *e = p->data;					//取出数据
+							  pre->next = NULL;
+							  SL->last = pre;
+							  free(p);
+							  SL->amount--;
+					}
+					else
+					{
+							  pre->next = p->next;
+							  *e = p->data;
+							  free(p);			//将p删除
+							  SL->amount--;
+					}
+					return TRUE;
+		  }
+		  else
+		  {
+					return FALSE;				  //没有找到
+		  }
+}
+
+void Swap(ElemType* a1, ElemType* a2)
+{
+		  ElemType temp = *a1;
+		  *a1 = *a2;
+		  *a2 = temp;
+}
+
+void  SListSort(LinkNode *left,LinkNode *right)			//排序
+{
+		  if (left != NULL && right != NULL)
+		  {
+					LinkNode* pslow = left;		  //等价于数组中的指针i
+					LinkNode* pfast = left->next; //等价于数组中的指针j
+					LinkNode* pre = NULL;		   //记录上一个pslow的数值用于分治
+					while (pfast!=NULL)
+					{
+							  if (pfast->data <= left->data)
+							  {
+										pre = pslow;				  //记录上一个pslow的数值用于分治
+										pslow = pslow->next;
+										Swap(&pslow->data, &pfast->data);
+							 }
+							  pfast = pfast->next;
+					}
+					Swap(&left->data, &pslow->data);
+					SListSort(left, pre);
+					SListSort(pslow->next, right);
+		  }
+}
+
+void SListDistroy(SLIST_T* SL)					  //链表的摧毁
+{
+		  for (LinkNode* px = SL->first; px != SL->last; px = px->next)
+		  {
+					free(px);
+		  }
+		  SL->amount = 0;
+}
+
+void SListClear(SLIST_T* SL)		//链表的清空
+{
+		  for (LinkNode* px = SL->first; px != SL->last; px = px->next)
+		  {
+					px->data = 0;		//清空数据
+		  }
+}
