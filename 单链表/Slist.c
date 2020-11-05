@@ -271,7 +271,7 @@ void  SListSort(LinkNode *left,LinkNode *right)			//排序
 					LinkNode* pre = NULL;		   //记录上一个pslow的数值用于分治
 					while (pfast!=NULL)
 					{
-							  if (pfast->data <= left->data)
+							  if (pfast->data < left->data)
 							  {
 										pre = pslow;				  //记录上一个pslow的数值用于分治
 										pslow = pslow->next;
