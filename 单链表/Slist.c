@@ -179,7 +179,7 @@ BOOL SListDeleteByPos(SLIST_T* SL, int pos, ElemType* e)//单链表的通过位序删除
 					printf("链表的长度为空，无法进行删除操作\n");
 					return FALSE;
 		  }
-		  if (pos <0 || pos>SL->amount)
+		  if (pos <0 || pos>(int)SL->amount)
 		  {
 					printf("输入的需要删除的位置非法，无法进行删除操作\n");
 					return FALSE;
@@ -333,7 +333,10 @@ void SListClear(SLIST_T* SL)		//链表的清空
 		  LinkNode* px = SL->first->next;
 		  while (px != NULL)
 		  {
-					px->data = 0;
-					px = px->next;
+					SL->first->next = px->next;
+					free(px);
+					px = SL->first->next;
 		  }
+		  SL->last = SL->first;
+		  SL->amount = 0;	  //大小为0
 }
