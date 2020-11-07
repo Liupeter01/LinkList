@@ -20,9 +20,7 @@ void SListPushBack(SLIST_T* SL)	//µ¥Á´±íµÄÎ²²å·¨
 		  printf("ÇëÊäÈëÐèÒªÍ¨¹ýÎ²²å·¨²åÈëµÄÊý¾Ý(-1½áÊøÊäÈë):>");
 		  while (scanf("%d", &item) && item != -1)
 		  {
-					LinkNode* s = (LinkNode*)malloc(sizeof(LinkNode));
-					s->data = item;
-					s->next = NULL;
+					LinkNode* s = CreateNode(item);
 					if (ptr == NULL)			  //Ã»ÓÐÊ×Ôª½Úµã
 					{
 							  ptr = SL->first->next = s;		
@@ -53,9 +51,7 @@ void SListPushFront(SLIST_T* SL)//µ¥Á´±íµÄÍ·²å·¨
 		  ElemType item = 0;
 		  while (scanf("%d", &item) && item != -1)
 		  {
-					LinkNode* s = (LinkNode*)malloc(sizeof(LinkNode));
-					s->data = item;
-					s->next = NULL;
+					LinkNode* s = CreateNode(item);
 					if (SL->first->next == NULL && SL->amount == 0)			  //Ã»ÓÐÊ×Ôª½Úµã
 					{
 							  SL->first->next = s;			//s×÷ÎªÊ×Ôª½Úµã
@@ -91,10 +87,7 @@ void SListInsertBackByPos(SLIST_T* SL, int pos, ElemType e)  //µ¥Á´±í°´ÕÕÎ»ÐòÎ²²
 		  }
 		  if (p != NULL)				//ÅÐ¶ÏÓÐÎÞÕÒµ½½Úµã
 		  {
-					LinkNode* s = (LinkNode*)malloc(sizeof(LinkNode));
-					s->data = e;
-					s->next = NULL;
-
+					LinkNode* s = CreateNode(e);
 					if (p->next == NULL)		  //¸Ã½ÚµãÊÇ×îºóÒ»¸ö½ÚµãÃ»ÓÐºó¼Ì
 					{
 							  p->next = s;
@@ -339,4 +332,13 @@ void SListClear(SLIST_T* SL)		//Á´±íµÄÇå¿Õ
 		  }
 		  SL->last = SL->first;
 		  SL->amount = 0;	  //´óÐ¡Îª0
+}
+
+LinkNode* CreateNode(ElemType x)				  //½Úµã´´½¨
+{
+		  LinkNode* s = (LinkNode*)malloc(sizeof(LinkNode));
+		  assert(s != NULL);
+		  s->data = x;
+		  s->next = NULL;
+		  return s;
 }
