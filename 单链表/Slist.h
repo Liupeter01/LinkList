@@ -12,6 +12,7 @@
 #pragma once
 #include"LinkList.h"
 
+#define QUICKSORT
 #pragma warning(disable:6011)
 
 typedef struct SLIST_T
@@ -26,6 +27,8 @@ LinkNode* CreateNode(ElemType x);		//节点创建方法
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void InitSlist(SLIST_T* SL);			//初始化
 void  SListSort(LinkNode* left, LinkNode* right);			//排序
+void  SListQuickSort(LinkNode* left, LinkNode* right);			//快速排序
+void SListBubbleSort(LinkNode* left);						//冒泡排序
 void SListDistroy(SLIST_T* SL);					  //链表的摧毁
 void SListClear(SLIST_T* SL);			//链表的清空
 void SListReverse(SLIST_T* SL);			//链表的反转

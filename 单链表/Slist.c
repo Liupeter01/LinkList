@@ -255,7 +255,38 @@ void Swap(ElemType* a1, ElemType* a2)
 		  *a2 = temp;
 }
 
-void  SListSort(LinkNode *left,LinkNode *right)			//排序
+void  SListSort(LinkNode* left, LinkNode* right)			//排序的调用函数
+{
+#ifdef QUICKSORT
+		  SListQuickSort(left, right);			  	//快速排序
+#endif // QUICKSORT
+#ifndef QUICKSORT
+		  SListBubbleSort(left);					       //冒泡排序
+#endif // !QUICKSORT
+}
+
+void SListBubbleSort(LinkNode* left)						//冒泡排序
+{
+		  if (left != NULL)
+		  {
+					LinkNode* pstart = left;
+					while (pstart != NULL)
+					{
+							  LinkNode* pnode_1 = left;
+							  LinkNode* pnode_2 = pnode_1->next;
+							  while (pnode_2 != NULL)
+							  {
+										if (pnode_1->data > pnode_2->data)
+												  Swap(&pnode_1->data, &pnode_2->data);
+										pnode_1 = pnode_2;
+										pnode_2 = pnode_2->next;
+							  }
+							  pstart = pstart->next;
+					}
+		  }
+}
+
+void  SListQuickSort(LinkNode *left,LinkNode *right)			//快速排序
 {
 		  if (left != NULL && right != NULL)
 		  {
@@ -264,9 +295,9 @@ void  SListSort(LinkNode *left,LinkNode *right)			//排序
 					LinkNode* pre = NULL;		   //记录上一个pslow的数值用于分治
 					while (pfast!=NULL)
 					{
-							  if (pfast->data < left->data)
+							  if (pfast->data < pslow->data)	//Linklist[j]>LinkList[i]
 							  {
-										pre = pslow;				  //记录上一个pslow的数值用于分治
+										pre = pslow;		
 										pslow = pslow->next;
 										Swap(&pslow->data, &pfast->data);
 							 }
