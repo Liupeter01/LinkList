@@ -48,3 +48,7 @@ void SListPopFront(SLIST_T* SL);			//单链表的头部删除
 void SListPopBack(SLIST_T* SL);		//单链表的尾部删除
 BOOL SListDeleteByPos(SLIST_T* SL,int pos,ElemType *e);			//单链表的通过位序删除
 BOOL SListDeleteByNum(SLIST_T* SL,ElemType key,ElemType *e);			//单链表的通过数值删除
+
+////////////////////////////////////////////////////////链表融合//////////////////////////////////////////////////////////////
+void SListPushBackSingle(SLIST_T* SL, ElemType data);	//单链表的尾插法
+SLIST_T* SListMergeSort(SLIST_T* SL1, SLIST_T* SL2);  //链表的合并和排序

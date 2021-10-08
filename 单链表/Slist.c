@@ -417,3 +417,71 @@ LinkNode* CreateNode(ElemType x)				  //节点创建
 		  s->next = NULL;
 		  return s;
 }
+
+void SListPushBackSingle(SLIST_T* SL, ElemType data)	//单链表的尾插法
+{
+		  if (SL == NULL)					//该链表没有被初始化
+		  {
+					InitSlist(SL);
+		  }
+		  LinkNode* s = CreateNode(data);
+		  LinkList ptr = SL->first->next;	//指向首元结点
+		  if (ptr == NULL)			  //没有首元节点
+		  {
+					ptr = SL->first->next = s;
+					SL->last = ptr;					//记录尾部
+					SL->amount++;					//结点数增加了
+		  }
+		  else
+		  {
+					while (ptr->next != NULL)
+					{
+							  ptr = ptr->next;
+					}
+					ptr->next = s;
+					ptr = s;
+					SL->last = ptr;					//记录尾部
+					SL->amount++;					//结点数增加了
+		  }
+}
+
+SLIST_T* SListMergeSort(SLIST_T* SL1, SLIST_T* SL2)  //链表的合并和排序
+{
+		  if (SL1->amount == 0 || SL2->amount == 0)
+		  {
+					printf("链表参数没有初始化，请初始化!\n");
+					return NULL;				//如果链表的大小为0个或者1个没有必要进行操作
+		  }
+		  else
+		  {
+					SLIST_T* temp = (SLIST_T*)calloc(1, sizeof(SLIST_T));
+					InitSlist(temp);
+					LinkList p1 = SL1->first->next, p2 = SL2->first->next;
+					while (p1 != SL1->last->next && p2 != SL2->last->next)
+					{
+							  int data = 0;
+							  if (p1->data < p2->data)
+							  {
+										data = p1->data;
+										p1 = p1->next;
+							  }
+							  else
+							  {
+										data = p2->data;
+										p2 = p2->next;
+							  }
+							  SListPushBackSingle(temp, data);
+					}
+					while(p1 != SL1->last->next)
+					{
+							  SListPushBackSingle(temp, p1->data);
+							  p1 = p1->next;
+					}
+					while (p2 != SL2->last->next)
+					{
+							  SListPushBackSingle(temp, p2->data);
+							  p2 = p2->next;
+					}
+					return temp;
+		  }
+}

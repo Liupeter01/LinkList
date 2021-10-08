@@ -3,8 +3,13 @@
 
 int main()
 {
-		  SLIST_T list;
+		  SLIST_T list,ps;
 		  InitSlist(&list);
-		  Menu(&list);
+		  InitSlist(&ps);
+		  //Menu(&list);
+		  SListPushBack(&list);
+		  SListPushBack(&ps);
+		  SLIST_T* meg = SListMergeSort(&list, &ps);
+		  Menu(meg);
 		  return 0;
 }
