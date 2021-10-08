@@ -485,3 +485,30 @@ SLIST_T* SListMergeSort(SLIST_T* SL1, SLIST_T* SL2)  //链表的合并和排序
 					return temp;
 		  }
 }
+
+LinkNode* SListFindMiddle(SLIST_T* SL)			  //寻找链表中间值
+{
+		  if (SL->amount == 0)
+		  {
+					return NULL;
+		  }
+		  else if (SL->amount == 1)
+		  {
+					return SL->first->next;
+		  }
+		  else
+		  {
+					LinkNode* pslow = SL->first->next;		//首元结点
+					LinkNode* pfast = pslow;						  //pfast结点是pslow结点的二倍速
+					while (pfast != SL->last->next)
+					{
+							  pslow = pslow->next;
+							  pfast = pfast->next;
+							  if (pfast != SL->last->next)
+							  {
+										pfast = pfast->next;				  //pfast结点是pslow结点的二倍速
+							  }
+					}
+					return pslow;
+		  }
+}
