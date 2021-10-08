@@ -22,6 +22,8 @@ typedef struct SLIST_T
 		  size_t amount;				//用于存放链表的节点总数
 }SLIST_T;
 
+void Swap(ElemType* a1, ElemType* a2);
+void SwapLinkNodePointer(LinkNode** a1, LinkNode** a2);
 LinkNode* CreateNode(ElemType x);		//节点创建方法
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -32,6 +34,9 @@ void SListBubbleSort(LinkNode* left);						//冒泡排序
 void SListDistroy(SLIST_T* SL);					  //链表的摧毁
 void SListClear(SLIST_T* SL);			//链表的清空
 void SListReverse(SLIST_T* SL);			//链表的反转
+void SListReverseByLiner(SLIST_T* SL);			//链表线性反转(使用循环结构)
+void SListReverseByRecursion(SLIST_T* SL);   //链表递归反转外层函数
+void RevByRecursion(SLIST_T* SL, LinkNode** phead); //链表递归反转函数
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SListPushBack(SLIST_T* SL);	//单链表的尾插法

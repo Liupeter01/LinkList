@@ -255,6 +255,13 @@ void Swap(ElemType* a1, ElemType* a2)
 		  *a2 = temp;
 }
 
+void SwapLinkNodePointer(LinkNode** a1, LinkNode** a2)
+{
+		  LinkNode*temp = *a1;
+		  *a1 = *a2;
+		  *a2 = temp;
+}
+
 void  SListSort(LinkNode* left, LinkNode* right)			//排序的调用函数
 {
 #ifdef QUICKSORT
@@ -311,6 +318,25 @@ void  SListQuickSort(LinkNode *left,LinkNode *right)			//快速排序
 
 void SListReverse(SLIST_T* SL)			//链表的反转
 {
+#ifdef REVERSELINER
+		  SListReverseByLiner(SL);
+#endif
+#ifndef REVERSELINER
+		  SListReverseByRecursion(SL);
+#endif // !REVERSELINER
+}
+
+void SListReverseByRecursion(SLIST_T* SL)   //链表递归反转外层函数
+{
+		  if (SL->amount != 0 && SL->amount != 1)
+		  {
+					RevByRecursion(SL, &SL->first->next);		  //指向首元结点
+					SwapLinkNodePointer(&SL->first->next, &SL->last);
+		  }
+}
+
+void SListReverseByLiner(SLIST_T* SL)			//链表线性反转(使用循环结构)
+{
 		  if (SL->amount == 0 || SL->amount == 1)
 		  {
 					return;				//如果链表的大小为0个或者1个没有必要进行操作
@@ -337,6 +363,24 @@ void SListReverse(SLIST_T* SL)			//链表的反转
 							  }				  
 					}
 					SL->last->next = NULL;
+		  }
+}
+
+void RevByRecursion(SLIST_T* SL, LinkNode** phead)  //链表递归反转函数
+{
+		  if (*phead == SL->last)
+		  {
+					return;
+		  }
+		  else
+		  {
+					LinkNode* next = (*phead)->next;
+					RevByRecursion(SL, &next);
+					if (SL->first->next == (*phead))
+					{
+							  (*phead)->next = NULL;	  //首元结点指向空
+					}					
+					next->next = (*phead);
 		  }
 }
 
