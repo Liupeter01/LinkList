@@ -20,9 +20,7 @@ void SListPushBack(SLIST_T* SL)	//µ¥Á´±íµÄÎ²²å·¨
 		  printf("ÇëÊäÈëÐèÒªÍ¨¹ýÎ²²å·¨²åÈëµÄÊý¾Ý(-1½áÊøÊäÈë):>");
 		  while (scanf("%d", &item) && item != -1)
 		  {
-					LinkNode* s = (LinkNode*)malloc(sizeof(LinkNode));
-					s->data = item;
-					s->next = NULL;
+					LinkNode* s = CreateNode(item);
 					if (ptr == NULL)			  //Ã»ÓÐÊ×Ôª½Úµã
 					{
 							  ptr = SL->first->next = s;		
@@ -53,9 +51,7 @@ void SListPushFront(SLIST_T* SL)//µ¥Á´±íµÄÍ·²å·¨
 		  ElemType item = 0;
 		  while (scanf("%d", &item) && item != -1)
 		  {
-					LinkNode* s = (LinkNode*)malloc(sizeof(LinkNode));
-					s->data = item;
-					s->next = NULL;
+					LinkNode* s = CreateNode(item);
 					if (SL->first->next == NULL && SL->amount == 0)			  //Ã»ÓÐÊ×Ôª½Úµã
 					{
 							  SL->first->next = s;			//s×÷ÎªÊ×Ôª½Úµã
@@ -91,10 +87,7 @@ void SListInsertBackByPos(SLIST_T* SL, int pos, ElemType e)  //µ¥Á´±í°´ÕÕÎ»ÐòÎ²²
 		  }
 		  if (p != NULL)				//ÅÐ¶ÏÓÐÎÞÕÒµ½½Úµã
 		  {
-					LinkNode* s = (LinkNode*)malloc(sizeof(LinkNode));
-					s->data = e;
-					s->next = NULL;
-
+					LinkNode* s = CreateNode(e);
 					if (p->next == NULL)		  //¸Ã½ÚµãÊÇ×îºóÒ»¸ö½ÚµãÃ»ÓÐºó¼Ì
 					{
 							  p->next = s;
@@ -169,5 +162,353 @@ void SListPopFront(SLIST_T* SL)			//µ¥Á´±íµÄÍ·²¿É¾³ý
 							  free(p);
 							  SL->amount--;				  // ¸öÊý¼õÉÙÒ»¸ö
 					}
+		  }
+}
+
+BOOL SListDeleteByPos(SLIST_T* SL, int pos, ElemType* e)//µ¥Á´±íµÄÍ¨¹ýÎ»ÐòÉ¾³ý
+{
+		  if (SL == NULL || SL->amount == 0)
+		  {
+					printf("Á´±íµÄ³¤¶ÈÎª¿Õ£¬ÎÞ·¨½øÐÐÉ¾³ý²Ù×÷\n");
+					return FALSE;
+		  }
+		  if (pos <0 || pos>(int)SL->amount)
+		  {
+					printf("ÊäÈëµÄÐèÒªÉ¾³ýµÄÎ»ÖÃ·Ç·¨£¬ÎÞ·¨½øÐÐÉ¾³ý²Ù×÷\n");
+					return FALSE;
+		  }
+		  LinkNode* p = SL->first->next;		//Ìø¹ýÍ·½áµã´ÓÊ×Ôª½Úµã¿ªÊ¼
+		  int counter = 1;
+		  while (p != NULL && counter++ < pos - 1)
+		  {
+					p = p->next;//¼ÇÂ¼Ç°Ò»¸ö
+		  }
+		  if (p != NULL)				//ÅÐ¶ÏÓÐÎÞÕÒµ½½Úµã
+		  {
+					LinkNode* ptemp = p->next;
+					if (ptemp->next == NULL)			  //¸Ã½Úµã²»´æÔÚÏÂÒ»¸ö½Úµã(µ±Ç°ÊÇÎ²²¿½Úµã)
+					{
+							  *e = ptemp->data;					//È¡³öÊý¾Ý
+							  p->next = NULL;
+							  SL->last = p;				//µ¹ÊýµÚ¶þ¸ö½ÚµãÎªÎ²½áµã
+							  free(ptemp);
+							  SL->amount--;				  //ÊýÁ¿¼õÉÙ
+					}
+					else
+					{
+							  *e = ptemp->data;
+							  p->next = ptemp->next;
+							  free(ptemp);
+							  SL->amount--;				  //ÊýÁ¿¼õÉÙ
+					}
+					return TRUE;
+		  }
+		  else
+		  {
+					return FALSE;				  //Ã»ÓÐÕÒµ½½Úµã
+		  }
+}
+
+BOOL SListDeleteByNum(SLIST_T* SL, ElemType key, ElemType* e)		//µ¥Á´±íµÄÍ¨¹ýÊýÖµÉ¾³ý
+{
+		  if (SL == NULL || SL->amount == 0)
+		  {
+					printf("Á´±íµÄ³¤¶ÈÎª¿Õ£¬ÎÞ·¨½øÐÐÉ¾³ý²Ù×÷\n");
+					return FALSE;
+		  }
+		  LinkNode* p = SL->first->next;		//Ìø¹ýÍ·½áµã´ÓÊ×Ôª½Úµã¿ªÊ¼
+		  LinkNode* pre = NULL;
+		  while (p != NULL && p->data != key)
+		  {
+					pre = p;
+					p = p->next;
+		  }
+		  if (p != NULL)				//ÅÐ¶ÏÊÇ·ñÕÒµ½
+		  {
+					if (p->next == NULL)			  //µ±Ç°½ÚµãÎª×îºóµÄÒ»¸ö½Úµã
+					{
+							  *e = p->data;					//È¡³öÊý¾Ý
+							  pre->next = NULL;
+							  SL->last = pre;
+							  free(p);
+							  SL->amount--;
+					}
+					else
+					{
+							  pre->next = p->next;
+							  *e = p->data;
+							  free(p);			//½«pÉ¾³ý
+							  SL->amount--;
+					}
+					return TRUE;
+		  }
+		  else
+		  {
+					return FALSE;				  //Ã»ÓÐÕÒµ½
+		  }
+}
+
+void Swap(ElemType* a1, ElemType* a2)
+{
+		  ElemType temp = *a1;
+		  *a1 = *a2;
+		  *a2 = temp;
+}
+
+void SwapLinkNodePointer(LinkNode** a1, LinkNode** a2)
+{
+		  LinkNode*temp = *a1;
+		  *a1 = *a2;
+		  *a2 = temp;
+}
+
+void  SListSort(LinkNode* left, LinkNode* right)			//ÅÅÐòµÄµ÷ÓÃº¯Êý
+{
+#ifdef QUICKSORT
+		  SListQuickSort(left, right);			  	//¿ìËÙÅÅÐò
+#endif // QUICKSORT
+#ifndef QUICKSORT
+		  SListBubbleSort(left);					       //Ã°ÅÝÅÅÐò
+#endif // !QUICKSORT
+}
+
+void SListBubbleSort(LinkNode* left)						//Ã°ÅÝÅÅÐò
+{
+		  if (left != NULL)
+		  {
+					LinkNode* pstart = left;
+					while (pstart != NULL)
+					{
+							  LinkNode* pnode_1 = left;
+							  LinkNode* pnode_2 = pnode_1->next;
+							  while (pnode_2 != NULL)
+							  {
+										if (pnode_1->data > pnode_2->data)
+												  Swap(&pnode_1->data, &pnode_2->data);
+										pnode_1 = pnode_2;
+										pnode_2 = pnode_2->next;
+							  }
+							  pstart = pstart->next;
+					}
+		  }
+}
+
+void  SListQuickSort(LinkNode *left,LinkNode *right)			//¿ìËÙÅÅÐò
+{
+		  if (left != NULL && right != NULL)
+		  {
+					LinkNode* pslow = left;		  //µÈ¼ÛÓÚÊý×éÖÐµÄÖ¸Õëi
+					LinkNode* pfast = left->next; //µÈ¼ÛÓÚÊý×éÖÐµÄÖ¸Õëj
+					LinkNode* pre = NULL;		   //¼ÇÂ¼ÉÏÒ»¸öpslowµÄÊýÖµÓÃÓÚ·ÖÖÎ
+					while (pfast!=NULL)
+					{
+							  if (pfast->data < pslow->data)	//Linklist[j]>LinkList[i]
+							  {
+										pre = pslow;		
+										pslow = pslow->next;
+										Swap(&pslow->data, &pfast->data);
+							 }
+							  pfast = pfast->next;
+					}
+					Swap(&left->data, &pslow->data);
+					SListSort(left, pre);
+					SListSort(pslow->next, right);
+		  }
+}
+
+void SListReverse(SLIST_T* SL)			//Á´±íµÄ·´×ª
+{
+#ifdef REVERSELINER
+		  SListReverseByLiner(SL);
+#endif
+#ifndef REVERSELINER
+		  SListReverseByRecursion(SL);
+#endif // !REVERSELINER
+}
+
+void SListReverseByRecursion(SLIST_T* SL)   //Á´±íµÝ¹é·´×ªÍâ²ãº¯Êý
+{
+		  if (SL->amount != 0 && SL->amount != 1)
+		  {
+					RevByRecursion(SL, &SL->first->next);		  //Ö¸ÏòÊ×Ôª½áµã
+					SwapLinkNodePointer(&SL->first->next, &SL->last);
+		  }
+}
+
+void SListReverseByLiner(SLIST_T* SL)			//Á´±íÏßÐÔ·´×ª(Ê¹ÓÃÑ­»·½á¹¹)
+{
+		  if (SL->amount == 0 || SL->amount == 1)
+		  {
+					return;				//Èç¹ûÁ´±íµÄ´óÐ¡Îª0¸ö»òÕß1¸öÃ»ÓÐ±ØÒª½øÐÐ²Ù×÷
+		  }
+		  else
+		  {
+					SL->last = SL->first->next;				//½«Ê×Ôª½Úµã¼ÇÂ¼ÎªÎ²²¿½Úµã
+					LinkNode* p = SL->first->next;			//Ö¸ÏòÊ×Ôª½Úµã
+					LinkNode* pnext = p->next;			//Ö¸ÏòpÖ®ºóµÄ½Úµã
+					while (pnext != NULL)
+					{
+							  LinkNode* temp = pnext;				  //ÁÙÊ±¼ÇÂ¼½ÚµãÎ»ÖÃ
+							  if (temp->next == NULL)
+							  {
+										pnext->next = p;
+										SL->first->next = pnext;
+										break;
+							  }
+							  else
+							  {
+										pnext = pnext->next;		  //pÈ¥ÏÂÒ»¸ö½Úµã
+										temp->next = p;		
+										p = temp;			//p½ô¸úÉÏÒ»¸öÔªËØ
+							  }				  
+					}
+					SL->last->next = NULL;
+		  }
+}
+
+void RevByRecursion(SLIST_T* SL, LinkNode** phead)  //Á´±íµÝ¹é·´×ªº¯Êý
+{
+		  if (*phead == SL->last)
+		  {
+					return;
+		  }
+		  else
+		  {
+					LinkNode* next = (*phead)->next;
+					RevByRecursion(SL, &next);
+					if (SL->first->next == (*phead))
+					{
+							  (*phead)->next = NULL;	  //Ê×Ôª½áµãÖ¸Ïò¿Õ
+					}					
+					next->next = (*phead);
+		  }
+}
+
+void SListDistroy(SLIST_T* SL)					  //Á´±íµÄ´Ý»Ù
+{
+		  LinkNode* ptemp = NULL;
+		  for (LinkNode* px = SL->first->next;  px!=NULL; px = ptemp)
+		  {
+					LinkNode* ptemp = px->next;
+					px->next = NULL;
+					free(px);
+		  }
+		  SL->amount = 0;
+}
+
+void SListClear(SLIST_T* SL)		//Á´±íµÄÇå¿Õ
+{
+		  LinkNode* px = SL->first->next;
+		  while (px != NULL)
+		  {
+					SL->first->next = px->next;
+					free(px);
+					px = SL->first->next;
+		  }
+		  SL->last = SL->first;
+		  SL->amount = 0;	  //´óÐ¡Îª0
+}
+
+LinkNode* CreateNode(ElemType x)				  //½Úµã´´½¨
+{
+		  LinkNode* s = (LinkNode*)malloc(sizeof(LinkNode));
+		  assert(s != NULL);
+		  s->data = x;
+		  s->next = NULL;
+		  return s;
+}
+
+void SListPushBackSingle(SLIST_T* SL, ElemType data)	//µ¥Á´±íµÄÎ²²å·¨
+{
+		  if (SL == NULL)					//¸ÃÁ´±íÃ»ÓÐ±»³õÊ¼»¯
+		  {
+					InitSlist(SL);
+		  }
+		  LinkNode* s = CreateNode(data);
+		  LinkList ptr = SL->first->next;	//Ö¸ÏòÊ×Ôª½áµã
+		  if (ptr == NULL)			  //Ã»ÓÐÊ×Ôª½Úµã
+		  {
+					ptr = SL->first->next = s;
+					SL->last = ptr;					//¼ÇÂ¼Î²²¿
+					SL->amount++;					//½áµãÊýÔö¼ÓÁË
+		  }
+		  else
+		  {
+					while (ptr->next != NULL)
+					{
+							  ptr = ptr->next;
+					}
+					ptr->next = s;
+					ptr = s;
+					SL->last = ptr;					//¼ÇÂ¼Î²²¿
+					SL->amount++;					//½áµãÊýÔö¼ÓÁË
+		  }
+}
+
+SLIST_T* SListMergeSort(SLIST_T* SL1, SLIST_T* SL2)  //Á´±íµÄºÏ²¢ºÍÅÅÐò
+{
+		  if (SL1->amount == 0 || SL2->amount == 0)
+		  {
+					printf("Á´±í²ÎÊýÃ»ÓÐ³õÊ¼»¯£¬Çë³õÊ¼»¯!\n");
+					return NULL;				//Èç¹ûÁ´±íµÄ´óÐ¡Îª0¸ö»òÕß1¸öÃ»ÓÐ±ØÒª½øÐÐ²Ù×÷
+		  }
+		  else
+		  {
+					SLIST_T* temp = (SLIST_T*)calloc(1, sizeof(SLIST_T));
+					InitSlist(temp);
+					LinkList p1 = SL1->first->next, p2 = SL2->first->next;
+					while (p1 != SL1->last->next && p2 != SL2->last->next)
+					{
+							  int data = 0;
+							  if (p1->data < p2->data)
+							  {
+										data = p1->data;
+										p1 = p1->next;
+							  }
+							  else
+							  {
+										data = p2->data;
+										p2 = p2->next;
+							  }
+							  SListPushBackSingle(temp, data);
+					}
+					while(p1 != SL1->last->next)
+					{
+							  SListPushBackSingle(temp, p1->data);
+							  p1 = p1->next;
+					}
+					while (p2 != SL2->last->next)
+					{
+							  SListPushBackSingle(temp, p2->data);
+							  p2 = p2->next;
+					}
+					return temp;
+		  }
+}
+
+LinkNode* SListFindMiddle(SLIST_T* SL)			  //Ñ°ÕÒÁ´±íÖÐ¼äÖµ
+{
+		  if (SL->amount == 0)
+		  {
+					return NULL;
+		  }
+		  else if (SL->amount == 1)
+		  {
+					return SL->first->next;
+		  }
+		  else
+		  {
+					LinkNode* pslow = SL->first->next;		//Ê×Ôª½áµã
+					LinkNode* pfast = pslow;						  //pfast½áµãÊÇpslow½áµãµÄ¶þ±¶ËÙ
+					while (pfast != SL->last->next)
+					{
+							  pslow = pslow->next;
+							  pfast = pfast->next;
+							  if (pfast != SL->last->next)
+							  {
+										pfast = pfast->next;				  //pfast½áµãÊÇpslow½áµãµÄ¶þ±¶ËÙ
+							  }
+					}
+					return pslow;
 		  }
 }
